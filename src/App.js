@@ -12,7 +12,8 @@ import './App.css';
 
 class App extends Component {
     state = {
-        todos: []
+        todos: [],
+        token: ''
     }
 
     componentDidMount() {
@@ -23,7 +24,6 @@ class App extends Component {
             email: 'test@test.com',
             password: 'password'
         }).then(res => this.setState({ token: res.data.token}))
-        console.log(this)
     }
 
     // Toggle completion
