@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 
-export class TodoItem extends Component {
+export class CompletedItem extends Component {
     getStyle = () => {
         return {
             background: '#f4f4f4',
@@ -15,7 +15,7 @@ export class TodoItem extends Component {
     render() {
         // destructuring.. pulls out the variables and used in line 21-22
         const { updated_at, task, completed } = this.props.todo
-        if (!completed) {
+        if (completed) {
             return (
                 <div style={this.getStyle()}>
                     <p>
@@ -31,7 +31,7 @@ export class TodoItem extends Component {
     }
 }
 
-TodoItem.propTypes = {
+CompletedItem.propTypes = {
     todo: PropTypes.object.isRequired
 }
 
@@ -45,4 +45,4 @@ const btnStyle = {
     float: 'right'
 }
 
-export default TodoItem
+export default CompletedItem
