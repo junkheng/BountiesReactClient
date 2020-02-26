@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import Header from './components/layout/Header'
+import Login from './components/users/Login'
+import SignUp from './components/users/SignUp'
 import Todos from './components/todos/Todos'
 import AddTodo from './components/todos/AddTodo'
 import About from './components/pages/About'
@@ -17,6 +19,11 @@ class App extends Component {
         axios.get('http://localhost:8080/todo')
         // axios.get('https://jsonplaceholder.typicode.com/todos?_limit=5')
             .then(res => this.setState({ todos: res.data }))
+        axios.post('http://localhost:8080/user/login', {
+            email: 'test@test.com',
+            password: 'password'
+        }).then(res => this.setState({ token: res.data.token}))
+        console.log(this)
     }
 
     // Toggle completion
@@ -36,7 +43,7 @@ class App extends Component {
 
     // Add Todo
     addTodo = (task) => {
-        const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAdGVzdC5jb20iLCJ1c2VySUQiOiI1ZTQ0YmUyY2JmNmQ2ZTFhMGQyMzIzNjEiLCJpYXQiOjE1ODI2OTk0MTIsImV4cCI6MTU4MjcwMzAxMn0.LyjuVQAtY3d4RzTwM3i6l7lq4q2Seneb_0lh2Rvd04Q'
+        const token = localStorage.token
         axios.defaults.headers.common['Authorization'] = token
         axios.post('http://localhost:8080/todo', {
             task,
@@ -46,8 +53,17 @@ class App extends Component {
             updated_at: Date.now()
         }).then(res => this.setState({ todos: [...this.state.todos, res.data]}))
     }
+
+    // signUp = (email, password) => {
+    //     axios.post('http://localhost:8080/user/signup', {
+    //         email,
+    //         password,
+    //     }).then(res => this.setState({ token: this.state.token }))
+    // }
     
     render() {
+        localStorage.setItem('token', this.state.token)
+        console.log(localStorage.token)
        return (
            <Router>
                 <div className="App">
@@ -64,6 +80,8 @@ class App extends Component {
                         </React.Fragment>
                     )} />
                     <Route path="/about" component={About} />
+                    <Route exact path="/login" component={Login} />
+                    <Route exact path="/signup" component={SignUp} />
                     </div>
                 </div>
             </Router>
