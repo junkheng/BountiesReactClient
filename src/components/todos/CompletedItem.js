@@ -14,13 +14,13 @@ export class CompletedItem extends Component {
 
     render() {
         // destructuring.. pulls out the variables and used in line 21-22
-        const { updated_at, task, completed } = this.props.todo
+        const { _id, task, completed } = this.props.todo
         if (completed) {
             return (
                 <div style={this.getStyle()}>
                     <p>
                         { task }
-                        <button onClick={this.props.delTodo.bind(this, updated_at)} style={btnStyle}>X</button>
+                        <button onClick={this.props.delTodo.bind(this, _id)} style={btnStyle}>X</button>
                     </p>
                 </div>
             )    
