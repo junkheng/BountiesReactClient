@@ -19,7 +19,6 @@ export class CompletedItem extends Component {
             return (
                 <div style={this.getStyle()}>
                     <p>
-                        <input type="checkbox" onChange={this.props.toggleComplete.bind(this, updated_at)} /> {' '}
                         { task }
                         <button onClick={this.props.delTodo.bind(this, updated_at)} style={btnStyle}>X</button>
                     </p>
