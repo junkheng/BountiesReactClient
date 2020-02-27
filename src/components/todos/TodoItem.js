@@ -14,14 +14,14 @@ export class TodoItem extends Component {
 
     render() {
         // destructuring.. pulls out the variables and used in line 21-22
-        const { updated_at, task, completed } = this.props.todo
+        const { task, completed, _id } = this.props.todo
         if (!completed) {
             return (
                 <div style={this.getStyle()}>
                     <p>
-                        <input type="checkbox" onChange={this.props.toggleComplete.bind(this, updated_at)} /> {' '}
+                        <input type="checkbox" onChange={this.props.toggleComplete.bind(this, _id)} /> {' '}
                         { task }
-                        <button onClick={this.props.delTodo.bind(this, updated_at)} style={btnStyle}>X</button>
+                        <button onClick={this.props.delTodo.bind(this, _id)} style={btnStyle}>X</button>
                     </p>
                 </div>
             )    

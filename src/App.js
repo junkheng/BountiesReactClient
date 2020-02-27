@@ -18,27 +18,42 @@ class App extends Component {
 
     componentDidMount() {
         axios.get('http://localhost:8080/todo')
-        // axios.get('https://jsonplaceholder.typicode.com/todos?_limit=5')
+            // axios.get('https://jsonplaceholder.typicode.com/todos?_limit=5')
             .then(res => this.setState({ todos: res.data }))
         axios.post('http://localhost:8080/user/login', {
             email: 'test@test.com',
             password: 'password'
-        }).then(res => this.setState({ token: res.data.token}))
+        }).then(res => this.setState({ token: res.data.token }))
     }
 
-    // Toggle completion
-    toggleComplete = (updated_at) => {
-        this.setState({ todos: this.state.todos.map(todo => {
-            if (todo.updated_at === updated_at ) {
-                todo.completed = !todo.completed // toggling
-            }
-            return todo
-        })})
+
+    // Need a better method to toggle true false below
+
+    // Toggle complete
+    toggleComplete = (_id) => {
+        axios.defaults.headers.common['Authorization'] = localStorage.token
+        // this.state.todos.map(todo => console.log(todo.completed))
+        axios.put(`http://localhost:8080/todo/${_id}`, {
+            completed: true,
+            updated_at: Date.now()
+        }).then(res =>
+            this.setState({
+                todos: this.state.todos.map(todo => {
+                    if (todo._id === _id) {
+                        todo.completed = !todo.completed // toggling
+                    }
+                    return todo
+                })
+            }))
     }
 
     // Delete todo
-    delTodo = (updated_at) => {
-        this.setState({ todos: [...this.state.todos.filter(todo => todo.updated_at !== updated_at)]})
+    delTodo = (_id) => {
+        axios.defaults.headers.common['Authorization'] = localStorage.token
+        axios.put(`http://localhost:8080/todo/${_id}`, {
+            deleted: true,
+            updated_at: Date.now()
+        }).then(res => this.setState({ todos: [...this.state.todos.filter(todo => todo._id !== _id)] }))
     }
 
     // Add Todo
@@ -51,7 +66,7 @@ class App extends Component {
             deleted: false,
             date: Date.now(),
             updated_at: Date.now()
-        }).then(res => this.setState({ todos: [...this.state.todos, res.data]}))
+        }).then(res => this.setState({ todos: [...this.state.todos, res.data] }))
     }
 
     // signUp = (email, password) => {
@@ -60,28 +75,28 @@ class App extends Component {
     //         password,
     //     }).then(res => this.setState({ token: this.state.token }))
     // }
-    
+
     render() {
         localStorage.setItem('token', this.state.token)
         console.log(localStorage.token)
-       return (
-           <Router>
+        return (
+            <Router>
                 <div className="App">
                     <div className="container">
-                    <Header />
-                    <Route exact path="/" render={props => (
-                        <React.Fragment>
-                            <AddTodo addTodo={this.addTodo}/>
-                            <Todos 
-                                todos={this.state.todos} 
-                                toggleComplete={this.toggleComplete}
-                                delTodo={this.delTodo}
-                            />
-                        </React.Fragment>
-                    )} />
-                    <Route path="/about" component={About} />
-                    <Route exact path="/login" component={Login} />
-                    <Route exact path="/signup" component={SignUp} />
+                        <Header />
+                        <Route exact path="/" render={props => (
+                            <React.Fragment>
+                                <AddTodo addTodo={this.addTodo} />
+                                <Todos
+                                    todos={this.state.todos}
+                                    toggleComplete={this.toggleComplete}
+                                    delTodo={this.delTodo}
+                                />
+                            </React.Fragment>
+                        )} />
+                        <Route path="/about" component={About} />
+                        <Route exact path="/login" component={Login} />
+                        <Route exact path="/signup" component={SignUp} />
                     </div>
                 </div>
             </Router>

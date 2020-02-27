@@ -15,9 +15,9 @@ class SignUp extends Component {
         console.log(this)
     }
     render() {
-        console.log(this.state.token)
+        // console.log(this.state.token)
         localStorage.setItem('token', this.state.token)
-        console.log(localStorage.token)
+        // console.log(localStorage.token)
         return (
             <form onSubmit={this.onSubmit} style={{display: 'flex'}}>
                 {/* <input
