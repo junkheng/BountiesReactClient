@@ -5,6 +5,7 @@ import Login from './components/users/Login'
 import SignUp from './components/users/SignUp'
 import Todos from './components/todos/Todos'
 import AddTodo from './components/todos/AddTodo'
+import Deleted from './components/todos/Deleted'
 import About from './components/pages/About'
 import axios from 'axios'
 
@@ -13,7 +14,7 @@ import './App.css';
 class App extends Component {
     state = {
         todos: [],
-        token: ''
+        token: '',
     }
 
     componentDidMount() {
@@ -97,6 +98,14 @@ class App extends Component {
                         <Route path="/about" component={About} />
                         <Route exact path="/login" component={Login} />
                         <Route exact path="/signup" component={SignUp} />
+                        {/* <Route exact path="/deleted" component={DeletedItem} /> */}
+                        <Route exact path="/deleted" render={props => (
+                            <React.Fragment>
+                                <Deleted
+                                    todos={this.state.todos}
+                                />
+                            </React.Fragment>
+                        )} />
                     </div>
                 </div>
             </Router>
