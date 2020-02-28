@@ -42,7 +42,7 @@ class App extends Component {
             this.setState({
                 todos: this.state.todos.map(todo => {
                     if (todo._id === _id) {
-                        todo.completed = !todo.completed // toggling
+                        todo.completed = !todo.completed // toggling for future revert
                     }
                     return todo
                 })
@@ -55,7 +55,17 @@ class App extends Component {
         axios.put(`http://localhost:8080/todo/${_id}`, {
             deleted: true,
             updated_at: Date.now()
-        }).then(res => this.setState({ todos: [...this.state.todos.filter(todo => todo._id !== _id)] }))
+    }).then( res =>
+        this.setState({
+            todos: this.state.todos.map(todo => {
+                if (todo._id === _id) {
+                    todo.deleted = !todo.deleted // toggling for future revert
+                }
+                return todo
+            })
+        })
+        )
+        // }).then(res => this.setState({ todos: [...this.state.todos.filter(todo => todo._id !== _id)] }))
     }
 
     // Add Todo

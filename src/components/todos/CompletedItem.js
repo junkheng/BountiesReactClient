@@ -14,8 +14,8 @@ export class CompletedItem extends Component {
 
     render() {
         // destructuring.. pulls out the variables and used in line 21-22
-        const { _id, task, completed } = this.props.todo
-        if (completed) {
+        const { _id, task, completed, deleted } = this.props.todo
+        if (completed && !deleted) {
             return (
                 <div style={this.getStyle()}>
                     <p>
