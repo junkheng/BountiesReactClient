@@ -20,7 +20,6 @@ class App extends Component {
 
     componentDidMount() {
         axios.get('http://localhost:8080/todo')
-            // axios.get('https://jsonplaceholder.typicode.com/todos?_limit=5')
             .then(res => this.setState({ todos: res.data }))
         axios.post('http://localhost:8080/user/login', {
             email: 'test@test.com',
@@ -32,7 +31,7 @@ class App extends Component {
     // Need a better method to toggle true false below
 
     // Toggle complete
-    toggleComplete = (_id, completed) => {
+    toggleComplete = (_id) => {
         axios.defaults.headers.common['Authorization'] = localStorage.token
         // this.state.todos.map(todo => console.log(_id))
         axios.put(`http://localhost:8080/todo/${_id}`, {
@@ -50,7 +49,7 @@ class App extends Component {
     }
 
     // Toggle incomplete *not a DRY way but works for now*
-    toggleIncomplete = (_id, completed) => {
+    toggleIncomplete = (_id) => {
         axios.defaults.headers.common['Authorization'] = localStorage.token
         axios.put(`http://localhost:8080/todo/${_id}`, {
             completed: false,
@@ -72,17 +71,15 @@ class App extends Component {
         axios.put(`http://localhost:8080/todo/${_id}`, {
             deleted: true,
             updated_at: Date.now()
-    }).then( res =>
-        this.setState({
-            todos: this.state.todos.map(todo => {
-                if (todo._id === _id) {
-                    todo.deleted = !todo.deleted // toggling for future revert
-                }
-                return todo
-            })
-        })
-        )
-        // }).then(res => this.setState({ todos: [...this.state.todos.filter(todo => todo._id !== _id)] }))
+        }).then(res =>
+            this.setState({
+                todos: this.state.todos.map(todo => {
+                    if (todo._id === _id) {
+                        todo.deleted = !todo.deleted // toggling for future revert
+                    }
+                    return todo
+                })
+            }))
     }
 
     // Add Todo
@@ -137,7 +134,6 @@ class App extends Component {
                             <React.Fragment>
                                 <Completed
                                     todos={this.state.todos}
-                                    // toggleComplete={this.toggleComplete}
                                     toggleIncomplete={this.toggleIncomplete}
                                     delTodo={this.delTodo}
                                 />
