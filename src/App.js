@@ -32,11 +32,28 @@ class App extends Component {
     // Need a better method to toggle true false below
 
     // Toggle complete
-    toggleComplete = (_id) => {
+    toggleComplete = (_id, completed) => {
         axios.defaults.headers.common['Authorization'] = localStorage.token
-        // this.state.todos.map(todo => console.log(todo.completed))
+        // this.state.todos.map(todo => console.log(_id))
         axios.put(`http://localhost:8080/todo/${_id}`, {
             completed: true,
+            updated_at: Date.now()
+        }).then(res =>
+            this.setState({
+                todos: this.state.todos.map(todo => {
+                    if (todo._id === _id) {
+                        todo.completed = !todo.completed // toggling for future revert
+                    }
+                    return todo
+                })
+            }))
+    }
+
+    // Toggle incomplete *not a DRY way but works for now*
+    toggleIncomplete = (_id, completed) => {
+        axios.defaults.headers.common['Authorization'] = localStorage.token
+        axios.put(`http://localhost:8080/todo/${_id}`, {
+            completed: false,
             updated_at: Date.now()
         }).then(res =>
             this.setState({
@@ -120,6 +137,8 @@ class App extends Component {
                             <React.Fragment>
                                 <Completed
                                     todos={this.state.todos}
+                                    // toggleComplete={this.toggleComplete}
+                                    toggleIncomplete={this.toggleIncomplete}
                                     delTodo={this.delTodo}
                                 />
                             </React.Fragment>

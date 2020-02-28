@@ -7,7 +7,8 @@ class Completed extends Component {
         return this.props.todos.map((todo) => (
         <CompletedItem 
             key={todo._id} 
-            todo={todo} 
+            todo={todo}
+            toggleIncomplete={this.props.toggleIncomplete}
             delTodo={this.props.delTodo}
         /> )// passing of prop
         )
