@@ -16,17 +16,21 @@ class App extends Component {
     state = {
         todos: [],
         token: '',
+        email: '',
+        password: ''
     }
 
     componentDidMount() {
         axios.get('http://localhost:8080/todo')
             .then(res => this.setState({ todos: res.data }))
-        axios.post('http://localhost:8080/user/login', {
-            email: 'test@test.com',
-            password: 'password'
-        }).then(res => this.setState({ token: res.data.token }))
     }
 
+    login = (email, password) => {
+        axios.post('http://localhost:8080/user/login', {
+            email,
+            password
+        }).then(res => this.setState({ token: res.data.token }))
+    }
 
     // Need a better method to toggle true false below
 
@@ -95,16 +99,10 @@ class App extends Component {
         }).then(res => this.setState({ todos: [...this.state.todos, res.data] }))
     }
 
-    // signUp = (email, password) => {
-    //     axios.post('http://localhost:8080/user/signup', {
-    //         email,
-    //         password,
-    //     }).then(res => this.setState({ token: this.state.token }))
-    // }
-
     render() {
         localStorage.setItem('token', this.state.token)
-        console.log(localStorage.token)
+        console.log(`%c${localStorage.token}`, "font-family: helvetica;color:green;font-size:1.5em")
+        
         return (
             <Router>
                 <div className="App">
@@ -121,7 +119,16 @@ class App extends Component {
                             </React.Fragment>
                         )} />
                         <Route path="/about" component={About} />
-                        <Route exact path="/login" component={Login} />
+                        {/* <Route exact path="/login" component={Login} /> */}
+                        <Route exact path="/login" render={props => (
+                            <React.Fragment>
+                                <Login
+                                    handleChange={this.handleChange}
+                                    handleSubmit={this.handleSubmit}
+                                    login={this.login}
+                                />
+                            </React.Fragment>
+                        )} />
                         <Route exact path="/signup" component={SignUp} />
                         <Route exact path="/deleted" render={props => (
                             <React.Fragment>
