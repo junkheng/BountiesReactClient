@@ -32,6 +32,13 @@ class App extends Component {
         }).then(res => this.setState({ token: res.data.token }))
     }
 
+    signUp = (email, password) => {
+        axios.post('http://localhost:8080/user/signup', {
+            email,
+            password
+        }).then(res => (console.log('Registration complete')))
+    }
+
     // Need a better method to toggle true false below
 
     // Toggle complete
@@ -119,7 +126,15 @@ class App extends Component {
                             </React.Fragment>
                         )} />
                         <Route path="/about" component={About} />
-                        {/* <Route exact path="/login" component={Login} /> */}
+                        <Route exact path="/signup" render={props => (
+                            <React.Fragment>
+                                <SignUp
+                                    handleChange={this.handleChange}
+                                    handleSubmit={this.handleSubmit}
+                                    signUp={this.signUp}
+                                />
+                            </React.Fragment>
+                        )} />
                         <Route exact path="/login" render={props => (
                             <React.Fragment>
                                 <Login
@@ -129,7 +144,6 @@ class App extends Component {
                                 />
                             </React.Fragment>
                         )} />
-                        <Route exact path="/signup" component={SignUp} />
                         <Route exact path="/deleted" render={props => (
                             <React.Fragment>
                                 <Deleted

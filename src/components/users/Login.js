@@ -10,13 +10,11 @@ class Login extends Component {
         e.preventDefault()
         this.props.login(this.state.email, this.state.password) // sends info to parent App.js, login method
         this.setState({ email: '', password: '' })
-
     }
 
     handleEmail = (e) => this.setState({ [e.target.name]: e.target.value })
     handlePassword = (e) => this.setState({ [e.target.name]: e.target.value })
 
-    
     render() {
         return (
             <form onSubmit={this.handleSubmit} style={{ display: 'flex' }}>

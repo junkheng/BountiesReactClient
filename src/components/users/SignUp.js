@@ -7,16 +7,25 @@ class SignUp extends Component {
         password: '',
     }
 
+    handleSubmit = (e) => {
+        e.preventDefault()
+        this.props.signUp(this.state.email, this.state.password) // sends info to parent App.js, login method
+        this.setState({ email: '', password: '' })
+    }
+
+    handleEmail = (e) => this.setState({ [e.target.name]: e.target.value })
+    handlePassword = (e) => this.setState({ [e.target.name]: e.target.value })
+
     render() {
         return (
-            <form onSubmit={this.onSubmit} style={{display: 'flex'}}>
+            <form onSubmit={this.handleSubmit} style={{display: 'flex'}}>
                 <input
                     type="text" 
                     name="email"
                     style={{ flex: '10', padding: '5px'}}
                     placeholder="email" 
                     value={this.state.email}
-                    onChange={this.onChange}
+                    onChange={this.handleEmail}
                 />
                 <input
                     type="password" 
@@ -24,7 +33,7 @@ class SignUp extends Component {
                     style={{ flex: '10', padding: '5px'}}
                     placeholder="password" 
                     value={this.state.password}
-                    onChange={this.onChange}
+                    onChange={this.handlePassword}
                 />
                 <input 
                     type="submit" 
